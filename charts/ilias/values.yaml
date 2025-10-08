@@ -1,0 +1,199 @@
+# Default values for ilias.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+replicaCount: 1
+
+# This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+image:
+  # -- ilias image repository.
+  repository: container.gitlab.uni-regensburg.de/epruefung/ilias-php-apache
+  # -- ilias image pull policy.
+  pullPolicy: IfNotPresent
+  # -- ilias image tag.
+  tag: "8.1-bullseye"
+
+# -- Names of secret required for pulling image.
+imagePullSecrets: []
+
+# -- String to partially override ilias.fullname.
+nameOverride: ""
+# -- String to fully override ilias.fullname.
+fullnameOverride: ""
+
+# This section builds out the service account, see [here](https://kubernetes.io/docs/concepts/security/service-accounts/).
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # -- Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use.
+  name: ""
+
+# -- Additional annotations for ilias pod
+podAnnotations: {}
+# -- Additional labels for ilias pod.
+podLabels: {}
+
+# -- SecurityContext for ilias pod.
+podSecurityContext: {}
+
+# -- SecurityContext for ilias containers.
+securityContext: {}
+
+# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  # -- Service type for ilias service, see [here](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types).
+  type: ClusterIP
+  # -- Ports for ilias service, see [here](https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports).
+  ports:
+      # -- Name of first ilias service port.
+    - name: http
+      # -- Port within container that shall be used.
+      containerPort: 80
+      # -- Name of first ilias service port.
+    - name: https
+      # -- Port within container that shall be used.
+      containerPort: 443
+
+# This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  # -- Enables / Disables ilias ingress.
+  enabled: false
+  # -- ClassName for ilias ingress.
+  className: ""
+  # -- Additional annotations for ilias ingress.
+  annotations: {}
+  hosts:
+    # -- Hostname for ilias ingress.
+    - host: chart-example.local
+      paths:
+          # -- Path for ilias ingress.
+        - path: /
+          # -- PathType for ilias ingress.
+          pathType: ImplementationSpecific
+  # -- TLS configuration for ilias ingress.
+  tls: []
+
+# -- Resource allocations for ilias pod.
+resources: {}
+
+# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+livenessProbe:
+  httpGet:
+    # -- Path to use for ilias pod LivenessProbe.
+    path: /
+    # -- Port to use for ilias pod LivenessProbe.
+    port: http
+readinessProbe:
+  httpGet:
+    # -- Port to use for ilias pod ReadinessProbe.
+    path: /
+    # -- Port to use for ilias pod LivenessProbe.
+    port: http
+
+autoscaling:
+  # -- Enables/Disables Autoscaling.
+  enabled: false
+  # -- Minimum amount of replicas to spawn.
+  minReplicas: 1
+  # -- Maximum amount of replicas to spawn.
+  maxReplicas: 100
+  # -- Target CPU usage (in percent) the pod has to reach before spawning another one.
+  targetCPUUtilizationPercentage: 80
+
+# -- Additional volumes on the output Deployment definition.
+volumes: []
+
+# -- Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+
+# -- Specifies on which node this pod shall run.
+nodeSelector: {}
+
+# -- Specifies what kinds of taints are tolerable for this pod.
+tolerations: []
+
+# -- Specifies on which types of nodes this pod shall run.
+affinity: {}
+
+cron:
+  # -- Enables / Disables the CronJob.
+  enabled: true
+  # -- Schedule for the CronJob.
+  schedule: "0 2 * * *"
+  # -- Commands to run for CronJob.
+  commands:
+    - [
+        "/usr/local/bin/php",
+        "/var/www/html/cron/cron.php",
+        "run-jobs",
+        "ILIAS_USER",
+        "CLIENT"
+      ]
+
+persistence:
+  # -- Enables / Disables persistence for ilias.
+  enabled: true
+  # -- Size of ilias PersistentVolumeClaim.
+  size: 8Gi
+  # -- AccessModes for ilias PersistentVolumeClaim.
+  accessModes:
+    - ReadWriteOnce
+
+# Variables pertaining to Dragonfly, see https://github.com/dragonflyoss/helm-charts/blob/main/charts/dragonfly/values.yaml
+dragonfly:
+  # -- Enables / Disables Dragonfly.
+  enabled: true
+
+  storage:
+    # -- Enables / Disables persistence for Dragonfly.
+    enabled: true
+    # -- PersistentVolumeClaim size for Dragonfly.
+    requests: 128Mi
+
+  # -- Extra Parameters for Dragonfly.
+  extraArgs:
+    - --dbfilename=dump
+    - --snapshot_cron=* * * * *
+
+  # -- SecurityContext for Dragonfly pod.
+  podSecurityContext: {}
+
+  # -- SecurityContext for Dragonfly containers.
+  securityContext: {}
+
+environment:
+  timezone: Europe/Berlin
+
+# Variables pertaining to MariaDB, see https://github.com/CloudPirates-io/helm-charts/tree/main/charts/mariadb
+mariadb:
+  # -- Enables/Disables MariaDB pod.
+  enabled: true
+
+  auth:
+    # -- Name of the database MariaDB shall create.
+    database: ilias
+    # -- Username of the MariaDB root user.
+    username: ilias
+    # -- Password of the MariaDB root user.
+    password: ilias
+
+  persistence:
+    # -- Enables/Disables persistent storage to use for MariaDB.
+    enabled: true
+
+  config:
+    # -- Custom Configuration for MariaDB container.
+    customConfiguration: |
+      [mysqld]
+      default_storage_engine = InnoDB
+      character-set-server = utf8
+      collation-server = utf8_general_ci
+      join_buffer_size = 256K
+      table_open_cache = 512
+      innodb_buffer_pool_size = 3G
+

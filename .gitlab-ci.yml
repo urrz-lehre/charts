@@ -1,0 +1,51 @@
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS && $CI_PIPELINE_SOURCE == "push"
+      when: never
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+
+include:
+  - remote: https://gitlab.com/renovate-bot/renovate-runner/-/raw/v19.37.0/templates/renovate.gitlab-ci.yml
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+stages:
+  - test
+  - deploy
+
+lint:
+  stage: test
+  image:
+    name: alpine/helm
+    entrypoint: [""]
+  script:
+    - helm lint charts/*
+
+deploy:
+  stage: deploy
+  image:
+    name: alpine/helm
+    entrypoint: [""]
+  before_script:
+    - helm repo add gitlab ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/${CI_COMMIT_BRANCH} --username gitlab-ci-token --password $CI_JOB_TOKEN
+    - helm plugin install https://github.com/chartmuseum/helm-push.git
+  script:
+    - helm package --dependency-update charts/* --destination .
+    - find . -type f -maxdepth 1 -name "*.tgz" -exec helm cm-push {} gitlab \;
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - changes:
+        - charts/**/*
+
+renovate:
+  variables:
+    RENOVATE_EXTRA_FLAGS: "$CI_PROJECT_PATH"
+  rules:
+    - if: '$RENOVATE_TOKEN == null || $RENOVATE_TOKEN == ""'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_JOB_MANUAL == "true"'

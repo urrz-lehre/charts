@@ -1,0 +1,9 @@
+dependencies:
+- name: dragonfly
+  repository: oci://ghcr.io/dragonflydb/dragonfly/helm
+  version: v1.25.1
+- name: mariadb
+  repository: oci://registry-1.docker.io/cloudpirates
+  version: 0.3.3
+digest: sha256:671ad4ca2eefdc62d09dc3f47e3715d5a24ea45443943e5bc8bc3ab26b8c2feb
+generated: "2025-10-29T08:41:16.945612082+01:00"

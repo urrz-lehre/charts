@@ -1,0 +1,53 @@
+# ilias Helm chart
+
+{{ template "chart.deprecationWarning" . }}
+
+{{ template "chart.badgesSection" . }}
+
+ilias-helm is a [Helm](https://helm.sh) chart for installing [ilias](https://ilias.org).
+
+{{ template "chart.maintainersSection" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+{{ template "chart.requirementsSection" . }}
+
+## Installation and configuration
+
+As this chart repository is not public, you'll need to generate an Access Token in order to access it. Refer to the README located at the root of this repository for instructions.
+
+1. (Optional) if you want to deploy this chart in a separate `Namespace`, make sure to create that:
+
+    ```sh
+    kubectl create namespace <YOUR-NAMESPACE>
+    ```
+
+2. Using `examples/image-pull-secret.yaml`, create a new `Secret` containing the pull secret for your ilias container image. Adjust this file to your liking, then apply using:
+
+    ```sh
+    kubectl apply -f examples/image-pull-secret.yaml
+    ```
+
+3. (Optional) using `examples/postgres-auth.yaml`, create a new `Secret` containing the access credentials for Postgres. Adjust this file to your liking, then apply using:
+
+    ```sh
+    kubectl apply -f examples/postgres-auth.yaml
+    ```
+
+4. Copy and adjust the `values.yaml` file of this chart to fit your needs.
+
+5. Install this Helm chart by running:
+
+    ```sh
+    helm install -n <YOUR-NAMESPACE> -f <YOUR-VALUES> referat-lehre/ilias
+    ```
+
+6. ilias should now be deployed on your Kubernetes cluster. You can verify this using tools like [K9s](https://k9scli.io). We recommend finalizing the installation by opening a shell on the ilias pod and running:
+
+    ```sh
+    php admin/cli/install.php
+    ```
+
+{{ template "chart.valuesSection" . }}
+
+{{ template "helm-docs.versionFooter" . }}

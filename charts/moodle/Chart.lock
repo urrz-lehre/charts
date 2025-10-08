@@ -1,0 +1,9 @@
+dependencies:
+- name: dragonfly
+  repository: oci://ghcr.io/dragonflydb/dragonfly/helm
+  version: v1.25.1
+- name: postgres
+  repository: oci://registry-1.docker.io/cloudpirates
+  version: 0.7.2
+digest: sha256:07986e32c301d9f19fe92ed5c3581472c9a54b70ad94e75ffeac46d713f33d94
+generated: "2025-10-08T13:36:12.291409+02:00"

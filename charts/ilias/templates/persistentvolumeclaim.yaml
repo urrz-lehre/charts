@@ -1,0 +1,20 @@
+---
+{{- if .Values.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "ilias.fullname" . }}
+  labels:
+    {{- include "ilias.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/resource-policy: keep
+spec:
+  {{- with .Values.persistence.accessModes }}
+  accessModes:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.size | quote }}
+  storageClassName: {{ .Values.persistence.storageClassName | default "standard" | quote }}
+{{- end }}
