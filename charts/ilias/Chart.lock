@@ -5,5 +5,8 @@ dependencies:
 - name: mariadb
   repository: oci://registry-1.docker.io/cloudpirates
   version: 0.3.3
-digest: sha256:671ad4ca2eefdc62d09dc3f47e3715d5a24ea45443943e5bc8bc3ab26b8c2feb
-generated: "2025-10-29T08:41:16.945612082+01:00"
+- name: mathjax
+  repository: file://../mathjax
+  version: 0.1.0
+digest: sha256:87634c78658a2f0175c14874e2a5e33cf90c71cf8e13e5a2c20f2f15fa8ac5a4
+generated: "2025-11-27T09:32:01.439601819+01:00"

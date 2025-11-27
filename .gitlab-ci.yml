@@ -28,7 +28,7 @@ lint:
 deploy:
   stage: deploy
   image:
-    name: alpine/helm
+    name: alpine/helm:3.19
     entrypoint: [""]
   before_script:
     - helm repo add gitlab ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/${CI_COMMIT_BRANCH} --username gitlab-ci-token --password $CI_JOB_TOKEN
