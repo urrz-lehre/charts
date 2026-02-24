@@ -36,4 +36,25 @@ entries:
     urls:
     - https://github.com/urrz-lehre/charts/releases/download/mathjax-0.1.0/mathjax-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-24T11:43:06.111160367Z"
+  moodle:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-02-24T11:54:22.459342846Z"
+    dependencies:
+    - condition: dragonfly.enabled
+      name: dragonfly
+      repository: oci://ghcr.io/dragonflydb/dragonfly/helm
+      version: v1.25.1
+    - condition: postgres.enabled
+      name: postgres
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.7.2
+    description: A Helm chart for deploying Moodle using Kubernetes.
+    digest: 2df4d9d12708a034a124fadc24aabb36c84f8db9886b9c93c4a5d8188ae32ad6
+    icon: https://moodle.org/theme/moodleorg/pix/favicons/favicon.ico
+    name: moodle
+    type: application
+    urls:
+    - https://github.com/urrz-lehre/charts/releases/download/moodle-0.1.1/moodle-0.1.1.tgz
+    version: 0.1.1
+generated: "2026-02-24T11:54:22.459348626Z"
