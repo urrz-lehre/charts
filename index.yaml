@@ -1,0 +1,39 @@
+apiVersion: v1
+entries:
+  ilias:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-02-24T11:43:05.9473835Z"
+    dependencies:
+    - condition: dragonfly.enabled
+      name: dragonfly
+      repository: oci://ghcr.io/dragonflydb/dragonfly/helm
+      version: v1.25.1
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: oci://registry-1.docker.io/cloudpirates
+      version: 0.3.3
+    - condition: mathjax.enabled
+      name: mathjax
+      repository: file://../mathjax
+      version: 0.1.0
+    description: A Helm chart for ILIAS.
+    digest: 32d7dcdacc67e6565e784214393f325bcb6610d57cf7f9339330750a43c06f69
+    icon: https://docu.ilias.de/ilias.php?baseClass=ilrepositorygui&cmdNode=xu:mz&cmdClass=ilObjFileGUI&cmd=sendfile&ref_id=2821
+    name: ilias
+    type: application
+    urls:
+    - https://github.com/urrz-lehre/charts/releases/download/ilias-0.4.0/ilias-0.4.0.tgz
+    version: 0.4.0
+  mathjax:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-02-24T11:43:06.111153164Z"
+    description: A Helm chart for Kubernetes
+    digest: 489e1ea8de76a9416006fb97cf1eda5c431b64aa5cadf90e98b51cdea696c01b
+    name: mathjax
+    type: application
+    urls:
+    - https://github.com/urrz-lehre/charts/releases/download/mathjax-0.1.0/mathjax-0.1.0.tgz
+    version: 0.1.0
+generated: "2026-02-24T11:43:06.111160367Z"
