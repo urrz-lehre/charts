@@ -45,3 +45,6 @@ For issues specific to these Helm charts:
 - Review chart documentation and examples
 - Verify configuration values
 - Open an issue on GitLab
+
+---
+Licensed under AGPLv3 or later.
