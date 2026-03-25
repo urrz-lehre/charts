@@ -49,6 +49,10 @@ spec:
             - name: TZ
               value: "{{ .Values.environment.timezone }}"
             {{- end }}
+            {{- if .Values.environment.configFile}}
+            - name: CONFIG_LOCATION
+              value: "{{ .Values.environment.configFile }}"
+            {{- end }}
           {{- with .Values.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}
