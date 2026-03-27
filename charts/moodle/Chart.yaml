@@ -30,6 +30,6 @@ dependencies:
     repository: "oci://ghcr.io/dragonflydb/dragonfly/helm"
     condition: dragonfly.enabled
   - name: postgres
-    version: "0.7.2"
+    version: "0.18.3"
     repository: "oci://registry-1.docker.io/cloudpirates"
     condition: postgres.enabled
