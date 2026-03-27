@@ -30,7 +30,7 @@ dependencies:
     repository: "oci://ghcr.io/dragonflydb/dragonfly/helm"
     condition: dragonfly.enabled
   - name: mariadb
-    version: "0.3.3"
+    version: "0.15.3"
     repository: "oci://registry-1.docker.io/cloudpirates"
     condition: mariadb.enabled
   - name: mathjax
