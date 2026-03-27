@@ -13,34 +13,6 @@ include:
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
-stages:
-  - test
-  - deploy
-
-lint:
-  stage: test
-  image:
-    name: alpine/helm
-    entrypoint: [""]
-  script:
-    - helm lint charts/*
-
-deploy:
-  stage: deploy
-  image:
-    name: alpine/helm:3.19
-    entrypoint: [""]
-  before_script:
-    - helm repo add gitlab ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/${CI_COMMIT_BRANCH} --username gitlab-ci-token --password $CI_JOB_TOKEN
-    - helm plugin install https://github.com/chartmuseum/helm-push.git
-  script:
-    - helm package --dependency-update charts/* --destination .
-    - find . -type f -maxdepth 1 -name "*.tgz" -exec helm cm-push {} gitlab \;
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-    - changes:
-        - charts/**/*
-
 renovate:
   variables:
     RENOVATE_EXTRA_FLAGS: "$CI_PROJECT_PATH"
