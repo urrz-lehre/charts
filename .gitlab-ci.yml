@@ -8,7 +8,7 @@ workflow:
       when: never
 
 include:
-  - remote: https://gitlab.com/renovate-bot/renovate-runner/-/raw/v19.37.0/templates/renovate.gitlab-ci.yml
+  - local: renovate.gitlab-ci.yml
 
 stages:
   - test
