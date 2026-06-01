@@ -45,7 +45,7 @@ spec:
             - /bin/sh
             - -c
             - |
-              until nc -z {{ .Chart.Name }}-mariadb 3306; do
+              until nc -z {{ include "ilias.fullname" . }}-mariadb 3306; do
                 echo "Waiting for mariadb..."
                 sleep 2
               done
